@@ -17,7 +17,7 @@ interface SketchfabMotoViewerProps {
   showAttribution?: boolean;
   interactive?: boolean;
   interaction?: PartInteractionHandlers;
-  interactionControllerRef?: React.RefObject<PartInteractionController | null>;
+  interactionControllerRef?: React.MutableRefObject<PartInteractionController | null>;
   isHoveringPart?: boolean;
   isWholeModelHighlighted?: boolean;
 }

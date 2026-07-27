@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AuthModal } from '@/features/auth/AuthModal';
+import { InstallPwaPrompt } from '@/features/pwa/InstallPwaPrompt';
 
 export function Layout() {
   return (
@@ -12,6 +13,7 @@ export function Layout() {
       </main>
       <Footer />
       <AuthModal />
+      <InstallPwaPrompt />
     </div>
   );
 }

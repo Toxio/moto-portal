@@ -1,3 +1,4 @@
+import type { SketchfabSceneNode } from '@/features/parts/partNodeMap';
 import {
   DEFAULT_SKETCHFAB_FOV,
   DEFAULT_SKETCHFAB_ZOOM,
@@ -44,7 +45,12 @@ export interface SketchfabApi {
     options: { preventCameraConstraintsFocus?: boolean },
     callback?: (err?: Error) => void,
   ) => void;
-  getNodeMap: (callback: (err: Error | null, nodes?: Record<string, unknown>[]) => void) => void;
+  getNodeMap: (
+    callback: (
+      err: Error | null,
+      nodes?: SketchfabSceneNode[] | Record<string, SketchfabSceneNode>,
+    ) => void,
+  ) => void;
   getMaterialList: (callback: (err: Error | null, materials?: SketchfabMaterial[]) => void) => void;
   setHighlightOptions: (
     options: {

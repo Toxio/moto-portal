@@ -133,7 +133,7 @@ function resolveMaterialPartId(
 export function setupPartInteraction(
   api: SketchfabApi,
   handlers: PartInteractionHandlers,
-): PartInteractionController {
+): PartInteractionSetup {
   let instancePartMap = new Map<number, string>();
   let materialPartMap = new Map<string, string>();
   let partMaterialsMap = new Map<string, SketchfabSceneMaterial[]>();
@@ -308,9 +308,13 @@ export function setupPartInteraction(
     handlers.onPartSelect?.(partId);
   };
 
-  api.addEventListener('nodeMouseEnter', onNodeEnter, PICK_OPTIONS);
-  api.addEventListener('nodeMouseLeave', onNodeLeave, PICK_OPTIONS);
-  api.addEventListener('click', onClick, PICK_OPTIONS);
+  api.addEventListener(
+    'nodeMouseEnter',
+    (info) => onNodeEnter(info as SketchfabHoverNode),
+    PICK_OPTIONS,
+  );
+  api.addEventListener('nodeMouseLeave', () => onNodeLeave(), PICK_OPTIONS);
+  api.addEventListener('click', (info) => onClick(info as SketchfabPickResult), PICK_OPTIONS);
 
   const controller: PartInteractionController = {
     highlightPart,
