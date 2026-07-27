@@ -1,0 +1,70 @@
+import type { MotoEvent } from '@/lib/types';
+
+const IMG = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?w=800&q=80&auto=format&fit=crop`;
+
+export const mockEvents: MotoEvent[] = [
+  {
+    id: 'e1',
+    title: 'MotoFest Kyiv 2026',
+    description: 'Крупнейший мотофестиваль Украины с шоу, конкурсами и выставкой.',
+    date: '2026-05-15',
+    endDate: '2026-05-17',
+    location: 'VDNH, Киев',
+    city: 'Киев',
+    source: 'facebook',
+    imageUrl: IMG('1558981403-c5f9899a443c'),
+    isPast: false,
+  },
+  {
+    id: 'e2',
+    title: 'Track Day — Autodrom Chayka',
+    description: 'Трек-день для всех уровней подготовки.',
+    date: '2026-04-20',
+    location: 'Autodrom Chayka',
+    city: 'Киев',
+    source: 'motofan',
+    imageUrl: IMG('1568774123-dc263936aa03'),
+    isPast: false,
+  },
+  {
+    id: 'e3',
+    title: 'Carpathian Ride 2026',
+    description: 'Групповой пробег по Карпатам, 3 дня.',
+    date: '2026-06-01',
+    endDate: '2026-06-03',
+    location: 'Старт: Львов',
+    city: 'Львов',
+    source: 'google',
+    imageUrl: IMG('1609630875171-b132137727ee'),
+    isPast: false,
+  },
+  {
+    id: 'e4',
+    title: 'Winter Moto Meet 2025',
+    description: 'Зимний мотослёт с костром и живой музыкой.',
+    date: '2025-12-20',
+    location: 'Бровары',
+    city: 'Киев',
+    source: 'manual',
+    imageUrl: IMG('1449426468159-d48dba745692'),
+    isPast: true,
+    gallery: [
+      IMG('1558981403-c5f9899a443c'),
+      IMG('1568774123-dc263936aa03'),
+      IMG('1609630875171-b132137727ee'),
+    ],
+  },
+  {
+    id: 'e5',
+    title: 'Retro Bike Show 2025',
+    description: 'Выставка ретро-мотоциклов и кастом-байков.',
+    date: '2025-09-10',
+    location: 'Мариинский парк',
+    city: 'Киев',
+    source: 'olx',
+    imageUrl: IMG('1621007678515-d48dba745692'),
+    isPast: true,
+    gallery: [IMG('1558980660-fa073ba6a2d2'), IMG('1558618666-fcd25c85cd64')],
+  },
+];

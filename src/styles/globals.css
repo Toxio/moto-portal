@@ -1,0 +1,74 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-primary: #0a0a0a;
+  --color-secondary: #2a2a2e;
+  --color-accent: #dc2626;
+  --color-accent-hover: #ef4444;
+  --color-muted: #71717a;
+  --color-glass: rgb(42 42 46 / 0.7);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Montserrat', system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-primary font-sans text-white antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-glass border border-white/10 backdrop-blur-md;
+  }
+
+  .gradient-border {
+    background:
+      linear-gradient(var(--color-secondary), var(--color-secondary)) padding-box,
+      linear-gradient(135deg, rgb(220 38 38 / 0.6), rgb(255 255 255 / 0.1)) border-box;
+    border: 1px solid transparent;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 20px rgb(220 38 38 / 0.3);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.leaflet-container {
+  background: #1a1a1e !important;
+  font-family: var(--font-sans);
+}
+
+.leaflet-popup-content-wrapper {
+  @apply bg-secondary rounded-lg border border-white/10 text-white;
+}
+
+.leaflet-popup-tip {
+  @apply bg-secondary;
+}
