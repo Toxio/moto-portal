@@ -1,7 +1,5 @@
 import type { EncyclopediaModel } from '@/lib/types';
-
-const IMG = (id: string) =>
-  `https://images.unsplash.com/photo-${id}?w=800&q=80&auto=format&fit=crop`;
+import { mockImage } from '@/mocks/images';
 
 export const mockEncyclopedia: EncyclopediaModel[] = [
   {
@@ -14,7 +12,7 @@ export const mockEncyclopedia: EncyclopediaModel[] = [
     power: 93,
     country: 'США',
     description: 'Легендарный круизер с монолитным дизайном и мощным V-Twin.',
-    imageUrl: IMG('1558981403-c5f9899a443c'),
+    imageUrl: mockImage('cruiserHarley'),
     specs: {
       'Тип двигателя': 'V-Twin, 4-тактный',
       Объём: '1868 см³',
@@ -33,7 +31,7 @@ export const mockEncyclopedia: EncyclopediaModel[] = [
     power: 200,
     country: 'Япония',
     description: 'Флагманский супersport с электронной подвеской и quickshifter.',
-    imageUrl: IMG('1568774123-dc263936aa03'),
+    imageUrl: mockImage('sportYamahaR1'),
     specs: {
       'Тип двигателя': 'Inline-4, crossplane',
       Объём: '998 см³',
@@ -52,7 +50,7 @@ export const mockEncyclopedia: EncyclopediaModel[] = [
     power: 102,
     country: 'Япония',
     description: 'Легенда adventure-сегмента для дальних путешествий.',
-    imageUrl: IMG('1609630875171-b132137727ee'),
+    imageUrl: mockImage('adventureTouring'),
     specs: {
       'Тип двигателя': 'Parallel Twin',
       Объём: '1084 см³',
@@ -71,7 +69,7 @@ export const mockEncyclopedia: EncyclopediaModel[] = [
     power: 110,
     country: 'Германия',
     description: 'Неоретро на базе оппозитного Boxer с характером.',
-    imageUrl: IMG('1449426468159-d48dba745692'),
+    imageUrl: mockImage('retroBmw'),
     specs: {
       'Тип двигателя': 'Boxer Twin',
       Объём: '1170 см³',
@@ -90,7 +88,7 @@ export const mockEncyclopedia: EncyclopediaModel[] = [
     power: 100,
     country: 'США',
     description: 'Компактный чopper с американским характером.',
-    imageUrl: IMG('1621007678515-d48dba745692'),
+    imageUrl: mockImage('chopperCruiser'),
     specs: {
       'Тип двигателя': 'V-Twin',
       Объём: '1133 см³',
@@ -109,7 +107,7 @@ export const mockEncyclopedia: EncyclopediaModel[] = [
     power: 120,
     country: 'Япония',
     description: 'Универсальный турer для дальних поездок.',
-    imageUrl: IMG('1558980660-fa073ba6a2d2'),
+    imageUrl: mockImage('touringRoad'),
     specs: {
       'Тип двигателя': 'Inline-4',
       Объём: '1043 см³',

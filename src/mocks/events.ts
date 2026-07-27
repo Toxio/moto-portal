@@ -1,7 +1,5 @@
 import type { MotoEvent } from '@/lib/types';
-
-const IMG = (id: string) =>
-  `https://images.unsplash.com/photo-${id}?w=800&q=80&auto=format&fit=crop`;
+import { mockImage } from '@/mocks/images';
 
 export const mockEvents: MotoEvent[] = [
   {
@@ -13,7 +11,7 @@ export const mockEvents: MotoEvent[] = [
     location: 'VDNH, Киев',
     city: 'Киев',
     source: 'facebook',
-    imageUrl: IMG('1558981403-c5f9899a443c'),
+    imageUrl: mockImage('heroMotorcycle'),
     isPast: false,
   },
   {
@@ -24,7 +22,7 @@ export const mockEvents: MotoEvent[] = [
     location: 'Autodrom Chayka',
     city: 'Киев',
     source: 'motofan',
-    imageUrl: IMG('1568774123-dc263936aa03'),
+    imageUrl: mockImage('sportYamahaR1'),
     isPast: false,
   },
   {
@@ -36,7 +34,7 @@ export const mockEvents: MotoEvent[] = [
     location: 'Старт: Львов',
     city: 'Львов',
     source: 'google',
-    imageUrl: IMG('1609630875171-b132137727ee'),
+    imageUrl: mockImage('adventureTouring'),
     isPast: false,
   },
   {
@@ -47,12 +45,12 @@ export const mockEvents: MotoEvent[] = [
     location: 'Бровары',
     city: 'Киев',
     source: 'manual',
-    imageUrl: IMG('1449426468159-d48dba745692'),
+    imageUrl: mockImage('cruiserSilver'),
     isPast: true,
     gallery: [
-      IMG('1558981403-c5f9899a443c'),
-      IMG('1568774123-dc263936aa03'),
-      IMG('1609630875171-b132137727ee'),
+      mockImage('heroMotorcycle'),
+      mockImage('sportYamahaR1'),
+      mockImage('adventureTouring'),
     ],
   },
   {
@@ -63,8 +61,8 @@ export const mockEvents: MotoEvent[] = [
     location: 'Мариинский парк',
     city: 'Киев',
     source: 'olx',
-    imageUrl: IMG('1621007678515-d48dba745692'),
+    imageUrl: mockImage('retroBmw'),
     isPast: true,
-    gallery: [IMG('1558980660-fa073ba6a2d2'), IMG('1558618666-fcd25c85cd64')],
+    gallery: [mockImage('chopperCruiser'), mockImage('workshop')],
   },
 ];

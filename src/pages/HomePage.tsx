@@ -8,6 +8,7 @@ import { HomePartsPreview } from '@/features/parts/HomePartsPreview';
 import { HomeForumSection } from '@/features/forum/HomeForumSection';
 import { HomeEventsSection } from '@/features/events/HomeEventsSection';
 import { useListings } from '@/hooks/useListings';
+import { mockImage } from '@/mocks/images';
 import { Skeleton } from '@/components/ui/Skeleton';
 
 export function HomePage() {
@@ -25,8 +26,7 @@ export function HomePage() {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1558981403-c5f9899a443c?w=1920&q=80)',
+            backgroundImage: `url(${mockImage('heroMotorcycle', 1920)})`,
           }}
         />
         <div className="from-primary/80 via-primary/60 to-primary absolute inset-0 bg-gradient-to-b" />
