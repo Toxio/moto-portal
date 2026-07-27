@@ -22,30 +22,58 @@ export function HomePage() {
         <meta name="description" content="Мотобарахолка для байкеров Украины и Европы" />
       </Helmet>
 
-      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${mockImage('heroMotorcycle', 1920)})`,
-          }}
-        />
-        <div className="from-primary/80 via-primary/60 to-primary absolute inset-0 bg-gradient-to-b" />
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <h1 className="mb-4 text-4xl font-extrabold md:text-6xl">
-            La <span className="text-accent">Moto</span>
-          </h1>
-          <p className="mb-8 text-lg text-white/80 md:text-xl">
-            Мотобарахолка, карта байкеров, форум и энциклопедия
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/listings">
-              <Button size="lg">Смотреть объявления</Button>
-            </Link>
-            <Link to="/map">
-              <Button variant="outline" size="lg">
-                Карта байкеров
-              </Button>
-            </Link>
+      <section className="relative isolate overflow-hidden pb-8 md:max-h-[980px] md:min-h-[max(640px,100svh)] md:pb-0">
+        <div className="absolute inset-0 overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
+            style={{
+              backgroundImage: `url(${mockImage('heroMotorcycle', 1920)})`,
+            }}
+            aria-hidden
+          />
+          <img
+            src={mockImage('heroMotorcycle', 2400)}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 hidden h-full w-full origin-[50%_56%] scale-100 object-cover object-[50%_56%] md:block"
+          />
+        </div>
+        <div className="absolute inset-0 bg-black/55 md:bg-black/20" />
+        <div className="from-primary/70 via-primary/35 absolute inset-0 bg-gradient-to-b to-transparent md:hidden" />
+        <div className="from-primary via-primary/75 absolute inset-0 hidden bg-gradient-to-t from-15% via-45% to-transparent md:block" />
+        <div className="from-primary absolute inset-x-0 bottom-0 hidden h-24 bg-gradient-to-t to-transparent md:block" />
+
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-[5.5rem] md:absolute md:inset-x-0 md:top-[32%] md:pt-0 lg:top-[36%]">
+          <div className="animate-fade-in mx-auto max-w-2xl text-center">
+            <div className="mb-5 flex items-center justify-center gap-3">
+              <span className="bg-accent h-px w-6 sm:w-10" aria-hidden />
+              <p className="text-accent max-w-xs text-sm font-medium tracking-wide sm:max-w-none md:text-base">
+                Больше чем просто мотобарахолка
+              </p>
+              <span className="bg-accent h-px w-6 sm:w-10" aria-hidden />
+            </div>
+
+            <h1 className="mb-4 text-[clamp(2.75rem,12vw,7rem)] leading-[0.88] font-bold tracking-[-0.03em] uppercase md:mb-5">
+              <span className="text-white">La </span>
+              <span className="text-accent drop-shadow-[0_0_42px_rgba(220,38,38,0.5)]">Moto</span>
+            </h1>
+
+            <p className="mx-auto mb-6 max-w-lg text-sm leading-relaxed font-light text-white/75 md:mb-9 md:text-lg">
+              Объявления, карта байкеров, форум и энциклопедия — всё для тех, кто живёт мото
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+              <Link to="/listings">
+                <Button size="lg" className="rounded-full px-7 font-semibold">
+                  Смотреть объявления
+                </Button>
+              </Link>
+              <Link to="/map">
+                <Button variant="outline" size="lg" className="rounded-full px-7 font-semibold">
+                  Карта байкеров
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
