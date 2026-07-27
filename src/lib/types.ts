@@ -17,6 +17,7 @@ export interface Listing {
   year?: number;
   condition: ListingCondition;
   category?: BikeCategory;
+  partId?: string;
   city: string;
   imageUrl: string;
   isPremium: boolean;
@@ -109,6 +110,12 @@ export interface User {
   provider: 'google' | 'telegram' | 'facebook';
 }
 
+export interface BikePart {
+  id: string;
+  name: string;
+  description: string;
+}
+
 export interface SearchResult {
   id: string;
   type: 'listing' | 'event' | 'encyclopedia' | 'forum';
@@ -131,6 +138,7 @@ export const BIKE_CATEGORIES: { id: BikeCategory; label: string; emoji: string }
 export const NAV_ITEMS = [
   { to: '/', label: 'Главная' },
   { to: '/listings', label: 'Объявления' },
+  { to: '/models', label: '3D модели' },
   { to: '/forum', label: 'Форум' },
   { to: '/map', label: 'Карта' },
   { to: '/events', label: 'События' },

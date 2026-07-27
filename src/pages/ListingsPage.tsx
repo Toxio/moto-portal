@@ -1,5 +1,5 @@
-import { useMemo, useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Tabs } from '@/components/ui/Tabs';
 import { Input } from '@/components/ui/Input';
@@ -9,6 +9,13 @@ import { Modal } from '@/components/ui/Modal';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ListingCard } from '@/features/listings/ListingCard';
 import { useListings } from '@/hooks/useListings';
+import { getPartName } from '@/mocks/parts';
+
+const InteractiveBikeModel = lazy(() =>
+  import('@/features/parts/InteractiveBikeModel').then((m) => ({
+    default: m.InteractiveBikeModel,
+  })),
+);
 
 const TABS = [
   { id: 'motorcycle', label: 'Мотоциклы' },
@@ -18,6 +25,7 @@ const TABS = [
 
 export function ListingsPage() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { listings, loading } = useListings();
   const [tab, setTab] = useState(searchParams.get('tab') || 'motorcycle');
   const [brand, setBrand] = useState('');
@@ -26,22 +34,35 @@ export function ListingsPage() {
 
   useEffect(() => {
     const urlTab = searchParams.get('tab');
+    const part = searchParams.get('part');
     if (urlTab && ['motorcycle', 'parts', 'gear'].includes(urlTab)) {
       setTab(urlTab);
+    } else if (part) {
+      setTab('parts');
     }
   }, [searchParams]);
 
   const categoryFilter = searchParams.get('category');
+  const partFilter = searchParams.get('part');
 
   const filtered = useMemo(() => {
     return listings.filter((l) => {
       if (l.type !== tab) return false;
+      if (partFilter && l.partId !== partFilter) return false;
       if (categoryFilter && l.category !== categoryFilter) return false;
       if (brand && l.brand?.toLowerCase() !== brand.toLowerCase()) return false;
       if (maxPrice && l.price > Number(maxPrice)) return false;
       return true;
     });
-  }, [listings, tab, categoryFilter, brand, maxPrice]);
+  }, [listings, tab, partFilter, categoryFilter, brand, maxPrice]);
+
+  const handlePartSelect = (partId: string) => {
+    navigate(`/listings?tab=parts&part=${partId}`);
+  };
+
+  const clearPartFilter = () => {
+    navigate('/listings?tab=parts');
+  };
 
   const brands = [...new Set(listings.map((l) => l.brand).filter(Boolean))];
 
@@ -58,6 +79,29 @@ export function ListingsPage() {
         </div>
 
         <Tabs tabs={TABS} active={tab} onChange={setTab} />
+
+        {tab === 'parts' && (
+          <div className="glass-panel mt-6 rounded-xl p-4 md:p-6">
+            <h2 className="mb-4 text-lg font-semibold">Поиск по 3D-схеме</h2>
+            <Suspense fallback={<Skeleton className="mx-auto h-56 max-w-2xl rounded-xl" />}>
+              <InteractiveBikeModel
+                activePart={partFilter}
+                onPartSelect={handlePartSelect}
+                linkToListings={false}
+                viewerHeight={360}
+                cameraZoom={1.1}
+                className="mx-auto max-w-2xl"
+              />
+            </Suspense>
+            {partFilter && (
+              <div className="mt-4 flex justify-center">
+                <Button variant="ghost" size="sm" onClick={clearPartFilter}>
+                  Сбросить фильтр: {getPartName(partFilter)}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="mt-4 flex flex-wrap gap-3">
           <Select

@@ -15,6 +15,9 @@ import { ProfilePage } from '@/pages/ProfilePage';
 import { SearchPage } from '@/pages/SearchPage';
 
 const MapPage = lazy(() => import('@/pages/MapPage').then((m) => ({ default: m.MapPage })));
+const ModelsPage = lazy(() =>
+  import('@/pages/ModelsPage').then((m) => ({ default: m.ModelsPage })),
+);
 
 function PageLoader() {
   return (
@@ -32,6 +35,14 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'listings', element: <ListingsPage /> },
       { path: 'listings/:id', element: <ListingDetailPage /> },
+      {
+        path: 'models',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ModelsPage />
+          </Suspense>
+        ),
+      },
       { path: 'forum', element: <ForumPage /> },
       { path: 'forum/:categoryId', element: <ForumCategoryPage /> },
       { path: 'forum/:categoryId/:threadId', element: <ForumThreadPage /> },

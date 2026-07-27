@@ -6,6 +6,7 @@ import { ListingCard } from '@/features/listings/ListingCard';
 import { HomeMapSection } from '@/features/map/HomeMapSection';
 import { HomeForumSection } from '@/features/forum/HomeForumSection';
 import { HomeEventsSection } from '@/features/events/HomeEventsSection';
+import { HomePartsPreview } from '@/features/parts/HomePartsPreview';
 import { useListings } from '@/hooks/useListings';
 import { Skeleton } from '@/components/ui/Skeleton';
 
@@ -68,6 +69,8 @@ export function HomePage() {
           ))}
         </div>
       </section>
+
+      <HomePartsPreview />
 
       <HomeMapSection />
 
