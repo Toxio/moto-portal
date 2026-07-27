@@ -4,6 +4,7 @@ import {
   DEFAULT_SKETCHFAB_ZOOM,
   SKETCHFAB_MOTO_MODEL_URL,
 } from '@/features/parts/sketchfab';
+import type { PartInteractionController } from '@/features/parts/sketchfabViewer';
 import type { PartInteractionHandlers } from '@/features/parts/sketchfabInteraction';
 import { initSketchfabViewer } from '@/features/parts/sketchfabViewer';
 import { cn } from '@/lib/utils';
@@ -11,14 +12,14 @@ import { cn } from '@/lib/utils';
 interface SketchfabMotoViewerProps {
   className?: string;
   height?: number;
-  /** Угол обзора камеры (градусы). Больше = модель дальше. Диапазон ~20–70 */
   initialFov?: number;
-  /** Множитель дистанции после recenter. 1 = как по умолчанию, 2 = в 2 раза дальше */
   cameraZoom?: number;
   showAttribution?: boolean;
   interactive?: boolean;
   interaction?: PartInteractionHandlers;
+  interactionControllerRef?: React.RefObject<PartInteractionController | null>;
   isHoveringPart?: boolean;
+  isWholeModelHighlighted?: boolean;
 }
 
 export function SketchfabMotoViewer({
@@ -29,7 +30,9 @@ export function SketchfabMotoViewer({
   showAttribution = true,
   interactive = false,
   interaction,
+  interactionControllerRef,
   isHoveringPart = false,
+  isWholeModelHighlighted = false,
 }: SketchfabMotoViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -46,6 +49,10 @@ export function SketchfabMotoViewer({
     setLoadError(false);
     setIsReady(false);
 
+    if (interactionControllerRef) {
+      interactionControllerRef.current = null;
+    }
+
     return initSketchfabViewer(iframe, {
       initialFov,
       cameraZoom,
@@ -55,16 +62,32 @@ export function SketchfabMotoViewer({
             onPartSelect: (partId) => interactionRef.current?.onPartSelect?.(partId),
           }
         : undefined,
+      onInteractionReady: (controller) => {
+        if (interactionControllerRef) {
+          interactionControllerRef.current = controller;
+        }
+      },
       onReady: () => setIsReady(true),
       onError: () => setLoadError(true),
     });
-  }, [initialFov, cameraZoom, interactive]);
+  }, [initialFov, cameraZoom, interactive, interactionControllerRef]);
 
   return (
-    <div className={cn('overflow-hidden rounded-xl border border-white/10', className)}>
+    <div
+      className={cn(
+        'overflow-hidden rounded-xl border transition-shadow duration-300',
+        isWholeModelHighlighted && isReady
+          ? 'border-accent/35 shadow-[0_0_28px_rgba(220,38,38,0.18)]'
+          : 'border-white/10',
+        className,
+      )}
+    >
       <div
         ref={containerRef}
-        className={cn('relative w-full', isHoveringPart && isReady && 'cursor-pointer')}
+        className={cn(
+          'relative w-full touch-manipulation',
+          isHoveringPart && isReady && 'cursor-pointer',
+        )}
         style={{ height }}
       >
         {!isReady && !loadError && (

@@ -20,23 +20,18 @@ interface PartMatchRule {
 const PART_MATCH_RULES: PartMatchRule[] = [
   {
     partId: 'front-wheel',
-    nodePatterns: [/tyre_f/i, /disk_f/i, /rims_d/i, /front.*wheel/i, /wheel.*front/i],
-    materialPatterns: [/^tyre_f$/i, /^disk_f_d$/i, /^rims_d$/i],
+    nodePatterns: [/tyre_f/i, /rims_d/i, /front.*wheel/i, /wheel.*front/i],
+    materialPatterns: [/^tyre_f$/i, /^rims_d$/i],
   },
   {
     partId: 'rear-wheel',
-    nodePatterns: [/tyre_r/i, /disc_rear/i, /rear.*wheel/i, /wheel.*rear/i],
-    materialPatterns: [/^tyre_r$/i, /^disc_rear$/i],
+    nodePatterns: [/tyre_r/i, /rear.*wheel/i, /wheel.*rear/i],
+    materialPatterns: [/^tyre_r$/i],
   },
   {
-    partId: 'wheels',
-    nodePatterns: [/wheel/i, /tire/i, /tyre/i, /rim/i, /disc/i, /колес/i, /шин/i],
-    materialPatterns: [/wheel/i, /tire/i, /tyre/i, /rim/i, /disc/i],
-  },
-  {
-    partId: 'engine',
-    nodePatterns: [/mechanics_d/i, /radiator/i, /engine/i, /motor/i, /двиг/i],
-    materialPatterns: [/^mechanics_d$/i, /^radiator$/i, /engine/i, /motor/i],
+    partId: 'brakes',
+    nodePatterns: [/disk_f/i, /disc_rear/i, /abs/i, /brake/i, /caliper/i, /тормоз/i],
+    materialPatterns: [/^disk_f_d$/i, /^disc_rear$/i, /^abs$/i, /brake/i, /caliper/i],
   },
   {
     partId: 'exhaust',
@@ -44,14 +39,14 @@ const PART_MATCH_RULES: PartMatchRule[] = [
     materialPatterns: [/^exh_/i, /^detail_exhaust$/i, /exhaust/i, /muffler/i],
   },
   {
-    partId: 'tank',
-    nodePatterns: [/PAINT_1/i, /livery_m1k/i, /tank/i, /fuel/i, /бак/i],
-    materialPatterns: [/PAINT_1/i, /^livery_m1k_d$/i, /tank/i, /fuel/i],
+    partId: 'seat',
+    nodePatterns: [/seat/i, /saddle/i, /сид/i],
+    materialPatterns: [/seat/i, /saddle/i],
   },
   {
-    partId: 'seat',
-    nodePatterns: [/cockpit_d/i, /seat/i, /saddle/i, /сид/i],
-    materialPatterns: [/^cockpit_d$/i, /seat/i, /saddle/i],
+    partId: 'handlebar',
+    nodePatterns: [/cockpit_d/i, /handlebar/i, /handle_bar/i, /рул/i],
+    materialPatterns: [/^cockpit_d$/i, /handlebar/i, /handle_bar/i],
   },
 ];
 
@@ -87,14 +82,14 @@ export function resolvePartId(nodeName?: string, materialName?: string): string 
   return null;
 }
 
-function normalizeNodes(
+export function normalizeNodes(
   nodes: SketchfabSceneNode[] | Record<string, SketchfabSceneNode>,
 ): SketchfabSceneNode[] {
   if (Array.isArray(nodes)) return nodes;
   return Object.values(nodes);
 }
 
-function normalizeMaterials(
+export function normalizeMaterials(
   materials: SketchfabSceneMaterial[] | Record<string, SketchfabSceneMaterial>,
 ): SketchfabSceneMaterial[] {
   if (Array.isArray(materials)) return materials;

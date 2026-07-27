@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { bikeParts } from '@/mocks/parts';
 import {
@@ -7,6 +7,7 @@ import {
   SKETCHFAB_MOTO_MODEL_URL,
 } from '@/features/parts/sketchfab';
 import { SketchfabMotoViewer } from '@/features/parts/SketchfabMotoViewer';
+import type { PartInteractionController } from '@/features/parts/sketchfabViewer';
 import { cn } from '@/lib/utils';
 
 interface InteractiveBikeModelProps {
@@ -15,10 +16,12 @@ interface InteractiveBikeModelProps {
   onPartSelect?: (partId: string) => void;
   linkToListings?: boolean;
   viewerHeight?: number;
-  /** Угол обзора (градусы). Больше = дальше */
   initialFov?: number;
-  /** Множитель дистанции после recenter. 1 = дефолт, 2 = в 2 раза дальше */
   cameraZoom?: number;
+}
+
+function isCoarsePointer(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
 }
 
 export function InteractiveBikeModel({
@@ -31,6 +34,7 @@ export function InteractiveBikeModel({
   cameraZoom = DEFAULT_SKETCHFAB_ZOOM,
 }: InteractiveBikeModelProps) {
   const navigate = useNavigate();
+  const interactionControllerRef = useRef<PartInteractionController | null>(null);
   const [hoveredPart, setHoveredPart] = useState<string | null>(null);
 
   const highlighted = activePart ?? hoveredPart;
@@ -49,6 +53,45 @@ export function InteractiveBikeModel({
     [linkToListings, navigate, onPartSelect],
   );
 
+  const focusPart = useCallback((partId: string | null) => {
+    setHoveredPart(partId);
+    interactionControllerRef.current?.highlightPart(partId, true);
+  }, []);
+
+  const handleModelPartTap = useCallback(
+    (partId: string) => {
+      focusPart(partId);
+
+      if (onPartSelect) {
+        onPartSelect(partId);
+        return;
+      }
+
+      if (!isCoarsePointer() && linkToListings) {
+        navigate(`/listings?tab=parts&part=${partId}`);
+      }
+    },
+    [focusPart, linkToListings, navigate, onPartSelect],
+  );
+
+  const handlePartButtonPress = useCallback(
+    (partId: string) => {
+      focusPart(partId);
+      handlePartClick(partId);
+    },
+    [focusPart, handlePartClick],
+  );
+
+  useEffect(() => {
+    if (activePart) {
+      interactionControllerRef.current?.highlightPart(activePart, true);
+    }
+  }, [activePart]);
+
+  const showMobileSearchCta = Boolean(
+    highlightedPart && linkToListings && !onPartSelect && isCoarsePointer(),
+  );
+
   return (
     <div className={cn('relative', className)}>
       <div className="relative mx-auto max-w-4xl">
@@ -58,26 +101,38 @@ export function InteractiveBikeModel({
           cameraZoom={cameraZoom}
           showAttribution={false}
           interactive
-          isHoveringPart={Boolean(hoveredPart)}
+          interactionControllerRef={interactionControllerRef}
+          isHoveringPart={Boolean(highlighted)}
+          isWholeModelHighlighted={!highlighted}
           interaction={{
             onPartHover: setHoveredPart,
-            onPartSelect: handlePartClick,
+            onPartSelect: handleModelPartTap,
           }}
         />
 
         <div
           className={cn(
-            'pointer-events-none absolute inset-x-0 bottom-0 rounded-b-xl bg-gradient-to-t from-black/90 via-black/60 to-transparent px-4 pt-10 pb-3 text-center transition-opacity duration-150',
-            highlighted ? 'opacity-100' : 'opacity-0',
+            'absolute inset-x-0 bottom-0 rounded-b-xl bg-gradient-to-t from-black/90 via-black/60 to-transparent px-4 pt-10 pb-3 text-center transition-opacity duration-150',
+            highlighted ? 'opacity-100' : 'pointer-events-none opacity-0',
           )}
           aria-hidden={!highlighted}
         >
           {highlightedPart && (
             <>
-              <p className="text-accent text-sm font-medium">
-                {highlightedPart.name}
-                {linkToListings && !onPartSelect && ' — кликните для поиска'}
-              </p>
+              {showMobileSearchCta ? (
+                <button
+                  type="button"
+                  onClick={() => handlePartClick(highlightedPart.id)}
+                  className="text-accent text-sm font-medium underline-offset-2 hover:underline"
+                >
+                  {highlightedPart.name} — нажмите для поиска
+                </button>
+              ) : (
+                <p className="text-accent text-sm font-medium">
+                  {highlightedPart.name}
+                  {linkToListings && !onPartSelect && ' — кликните для поиска'}
+                </p>
+              )}
               <p className="text-muted mt-0.5 text-xs">{highlightedPart.description}</p>
             </>
           )}
@@ -85,7 +140,10 @@ export function InteractiveBikeModel({
       </div>
 
       <p className="text-muted mt-3 text-center text-sm">
-        Наведите на деталь в модели или выберите кнопкой ниже
+        <span className="hidden sm:inline">
+          Наведите на деталь в модели или выберите кнопкой ниже
+        </span>
+        <span className="sm:hidden">Нажмите на деталь в модели или выберите кнопкой ниже</span>
       </p>
 
       <div className="mt-3 flex flex-wrap justify-center gap-2">
@@ -93,9 +151,11 @@ export function InteractiveBikeModel({
           <button
             key={part.id}
             type="button"
-            onClick={() => handlePartClick(part.id)}
-            onMouseEnter={() => setHoveredPart(part.id)}
-            onMouseLeave={() => setHoveredPart(null)}
+            onClick={() => handlePartButtonPress(part.id)}
+            onMouseEnter={() => focusPart(part.id)}
+            onMouseLeave={() => focusPart(activePart ?? null)}
+            onFocus={() => focusPart(part.id)}
+            onBlur={() => focusPart(activePart ?? null)}
             className={cn(
               'rounded-full border px-3 py-1.5 text-xs font-medium transition',
               (activePart === part.id || hoveredPart === part.id) &&

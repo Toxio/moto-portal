@@ -1,9 +1,12 @@
 import type { BikePart } from '@/lib/types';
 
 export const bikeParts: BikePart[] = [
-  { id: 'tank', name: 'Бензобак', description: 'Топливный бак и крышки' },
-  { id: 'engine', name: 'Двигатель', description: 'Двигатель и навесное' },
-  { id: 'wheels', name: 'Колёса (комплект)', description: 'Комплект колёс, диски и шины' },
+  { id: 'seat', name: 'Сиденье', description: 'Сиденье и обивка' },
+  {
+    id: 'brakes',
+    name: 'Тормоза',
+    description: 'Диски, колодки, суппорты, ABS',
+  },
   {
     id: 'front-wheel',
     name: 'Переднее колесо',
@@ -15,7 +18,11 @@ export const bikeParts: BikePart[] = [
     description: 'Задний диск, шина, тормозной диск',
   },
   { id: 'exhaust', name: 'Выхлоп', description: 'Глушитель и коллектор' },
-  { id: 'seat', name: 'Сиденье', description: 'Сиденье и обивка' },
+  {
+    id: 'handlebar',
+    name: 'Руль',
+    description: 'Руль, грипсы, переключатели',
+  },
 ];
 
 export function getPartName(partId: string): string {

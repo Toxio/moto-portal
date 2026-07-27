@@ -5,7 +5,9 @@ import {
 } from '@/features/parts/sketchfab';
 import {
   setupPartInteraction,
+  type PartInteractionController,
   type PartInteractionHandlers,
+  type PartInteractionSetup,
 } from '@/features/parts/sketchfabInteraction';
 
 const SKETCHFAB_SCRIPT = 'https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js';
@@ -55,6 +57,7 @@ export interface SketchfabApi {
     callback?: () => void,
   ) => void;
   highlightMaterial: (material: SketchfabMaterial) => void;
+  setMaterial: (material: SketchfabMaterial, callback?: () => void) => void;
   pickFromScreen: (
     position2D: number[],
     callback: (err: Error | null, coord?: Record<string, unknown>) => void,
@@ -135,12 +138,15 @@ export function applyInitialCamera(
   });
 }
 
+export type { PartInteractionController } from '@/features/parts/sketchfabInteraction';
+
 export function initSketchfabViewer(
   iframe: HTMLIFrameElement,
   options: {
     initialFov?: number;
     cameraZoom?: number;
     interaction?: PartInteractionHandlers;
+    onInteractionReady?: (controller: PartInteractionController) => void;
     onReady?: () => void;
     onError?: () => void;
   },
@@ -150,6 +156,7 @@ export function initSketchfabViewer(
 
   let api: SketchfabApi | null = null;
   let teardownInteraction: (() => void) | null = null;
+  let interactionSetup: PartInteractionSetup | null = null;
   let cancelled = false;
 
   loadSketchfabScript()
@@ -174,7 +181,9 @@ export function initSketchfabViewer(
               if (cancelled) return;
 
               if (options.interaction) {
-                teardownInteraction = setupPartInteraction(sketchfabApi, options.interaction);
+                interactionSetup = setupPartInteraction(sketchfabApi, options.interaction);
+                options.onInteractionReady?.(interactionSetup);
+                teardownInteraction = () => interactionSetup?.destroy();
               }
 
               options.onReady?.();
