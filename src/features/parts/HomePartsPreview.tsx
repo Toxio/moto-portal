@@ -13,9 +13,9 @@ export function HomePartsPreview() {
     <section className="mx-auto max-w-7xl px-4 py-12">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold">3D-модель мотоцикла</h2>
+          <h2 className="text-2xl font-bold">3D-модель и запчасти</h2>
           <p className="text-muted mt-1 text-sm">
-            Интерактивная модель Sketchfab — выберите деталь ниже
+            Выберите деталь на модели или в фильтрах — откроются подходящие объявления
           </p>
         </div>
         <Link to="/models" className="text-accent text-sm hover:underline">
@@ -24,7 +24,7 @@ export function HomePartsPreview() {
       </div>
       <div className="glass-panel rounded-xl p-6 md:p-10">
         <Suspense fallback={<Skeleton className="mx-auto h-[400px] max-w-4xl rounded-xl" />}>
-          <InteractiveBikeModel viewerHeight={400} />
+          <InteractiveBikeModel viewerHeight={400} cameraZoom={1.1} />
         </Suspense>
       </div>
     </section>

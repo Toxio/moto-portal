@@ -4,6 +4,7 @@ import { BIKE_CATEGORIES } from '@/lib/types';
 import { Button } from '@/components/ui/Button';
 import { ListingCard } from '@/features/listings/ListingCard';
 import { HomeMapSection } from '@/features/map/HomeMapSection';
+import { HomePartsPreview } from '@/features/parts/HomePartsPreview';
 import { HomeForumSection } from '@/features/forum/HomeForumSection';
 import { HomeEventsSection } from '@/features/events/HomeEventsSection';
 import { useListings } from '@/hooks/useListings';
@@ -68,6 +69,8 @@ export function HomePage() {
           ))}
         </div>
       </section>
+
+      <HomePartsPreview />
 
       <HomeMapSection />
 

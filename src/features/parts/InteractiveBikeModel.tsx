@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { bikeParts } from '@/mocks/parts';
-import {
-  DEFAULT_SKETCHFAB_FOV,
-  DEFAULT_SKETCHFAB_ZOOM,
-  SKETCHFAB_MOTO_MODEL_URL,
-} from '@/features/parts/sketchfab';
+import { DEFAULT_SKETCHFAB_FOV, DEFAULT_SKETCHFAB_ZOOM } from '@/features/parts/sketchfab';
 import { SketchfabMotoViewer } from '@/features/parts/SketchfabMotoViewer';
 import type { PartInteractionController } from '@/features/parts/sketchfabViewer';
 import { cn } from '@/lib/utils';
@@ -169,19 +165,6 @@ export function InteractiveBikeModel({
           </button>
         ))}
       </div>
-
-      <p className="text-muted mt-3 text-center text-xs">
-        3D-модель{' '}
-        <a
-          href={SKETCHFAB_MOTO_MODEL_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="text-accent hover:underline"
-        >
-          Moto
-        </a>{' '}
-        by evschazenez on Sketchfab
-      </p>
     </div>
   );
 }
