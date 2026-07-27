@@ -3,6 +3,10 @@ import {
   DEFAULT_SKETCHFAB_ZOOM,
   SKETCHFAB_MOTO_MODEL_ID,
 } from '@/features/parts/sketchfab';
+import {
+  setupPartInteraction,
+  type PartInteractionHandlers,
+} from '@/features/parts/sketchfabInteraction';
 
 const SKETCHFAB_SCRIPT = 'https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js';
 
@@ -11,10 +15,20 @@ interface CameraLookAt {
   target: number[];
 }
 
+export interface SketchfabMaterial {
+  id?: string;
+  name?: string;
+  stateSetID?: number;
+}
+
 export interface SketchfabApi {
   start: (callback?: (err?: Error) => void) => void;
   stop: (callback?: (err?: Error) => void) => void;
-  addEventListener: (event: string, callback: () => void) => void;
+  addEventListener: (
+    event: string,
+    callback: (info?: unknown) => void,
+    options?: { pick?: 'fast' | 'slow' },
+  ) => void;
   setFov: (angle: number, callback?: (err?: Error) => void) => void;
   getCameraLookAt: (callback: (err: Error | null, camera?: CameraLookAt) => void) => void;
   setCameraLookAt: (
@@ -27,6 +41,23 @@ export interface SketchfabApi {
     enable: boolean,
     options: { preventCameraConstraintsFocus?: boolean },
     callback?: (err?: Error) => void,
+  ) => void;
+  getNodeMap: (callback: (err: Error | null, nodes?: Record<string, unknown>[]) => void) => void;
+  getMaterialList: (callback: (err: Error | null, materials?: SketchfabMaterial[]) => void) => void;
+  setHighlightOptions: (
+    options: {
+      outlineWidth: number;
+      outlineColor: number[];
+      outlineDuration: number;
+      highlightColor: number[];
+      highlightDuration: number;
+    },
+    callback?: () => void,
+  ) => void;
+  highlightMaterial: (material: SketchfabMaterial) => void;
+  pickFromScreen: (
+    position2D: number[],
+    callback: (err: Error | null, coord?: Record<string, unknown>) => void,
   ) => void;
 }
 
@@ -109,6 +140,7 @@ export function initSketchfabViewer(
   options: {
     initialFov?: number;
     cameraZoom?: number;
+    interaction?: PartInteractionHandlers;
     onReady?: () => void;
     onError?: () => void;
   },
@@ -117,6 +149,7 @@ export function initSketchfabViewer(
   const cameraZoom = options.cameraZoom ?? DEFAULT_SKETCHFAB_ZOOM;
 
   let api: SketchfabApi | null = null;
+  let teardownInteraction: (() => void) | null = null;
   let cancelled = false;
 
   loadSketchfabScript()
@@ -138,7 +171,13 @@ export function initSketchfabViewer(
           sketchfabApi.addEventListener('viewerready', () => {
             if (cancelled) return;
             applyInitialCamera(sketchfabApi, initialFov, cameraZoom, () => {
-              if (!cancelled) options.onReady?.();
+              if (cancelled) return;
+
+              if (options.interaction) {
+                teardownInteraction = setupPartInteraction(sketchfabApi, options.interaction);
+              }
+
+              options.onReady?.();
             });
           });
         },
@@ -149,6 +188,7 @@ export function initSketchfabViewer(
 
   return () => {
     cancelled = true;
+    teardownInteraction?.();
     api?.stop();
   };
 }

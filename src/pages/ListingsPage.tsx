@@ -17,11 +17,17 @@ const InteractiveBikeModel = lazy(() =>
   })),
 );
 
+import type { ListingType } from '@/lib/types';
+
 const TABS = [
   { id: 'motorcycle', label: 'Мотоциклы' },
   { id: 'parts', label: 'Запчасти' },
   { id: 'gear', label: 'Экипировка' },
 ];
+
+function tabToListingType(tab: string): ListingType {
+  return tab === 'parts' ? 'part' : (tab as ListingType);
+}
 
 export function ListingsPage() {
   const [searchParams] = useSearchParams();
@@ -46,8 +52,10 @@ export function ListingsPage() {
   const partFilter = searchParams.get('part');
 
   const filtered = useMemo(() => {
+    const listingType = tabToListingType(tab);
+
     return listings.filter((l) => {
-      if (l.type !== tab) return false;
+      if (l.type !== listingType) return false;
       if (partFilter && l.partId !== partFilter) return false;
       if (categoryFilter && l.category !== categoryFilter) return false;
       if (brand && l.brand?.toLowerCase() !== brand.toLowerCase()) return false;

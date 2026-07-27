@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { bikeParts } from '@/mocks/parts';
-import { DEFAULT_SKETCHFAB_FOV, DEFAULT_SKETCHFAB_ZOOM } from '@/features/parts/sketchfab';
+import {
+  DEFAULT_SKETCHFAB_FOV,
+  DEFAULT_SKETCHFAB_ZOOM,
+  SKETCHFAB_MOTO_MODEL_URL,
+} from '@/features/parts/sketchfab';
 import { SketchfabMotoViewer } from '@/features/parts/SketchfabMotoViewer';
 import { cn } from '@/lib/utils';
 
@@ -30,31 +34,61 @@ export function InteractiveBikeModel({
   const [hoveredPart, setHoveredPart] = useState<string | null>(null);
 
   const highlighted = activePart ?? hoveredPart;
+  const highlightedPart = highlighted ? bikeParts.find((p) => p.id === highlighted) : null;
 
-  const handlePartClick = (partId: string) => {
-    if (onPartSelect) {
-      onPartSelect(partId);
-      return;
-    }
-    if (linkToListings) {
-      navigate(`/listings?tab=parts&part=${partId}`);
-    }
-  };
+  const handlePartClick = useCallback(
+    (partId: string) => {
+      if (onPartSelect) {
+        onPartSelect(partId);
+        return;
+      }
+      if (linkToListings) {
+        navigate(`/listings?tab=parts&part=${partId}`);
+      }
+    },
+    [linkToListings, navigate, onPartSelect],
+  );
 
   return (
     <div className={cn('relative', className)}>
-      <SketchfabMotoViewer
-        height={viewerHeight}
-        initialFov={initialFov}
-        cameraZoom={cameraZoom}
-        className="mx-auto max-w-4xl"
-      />
+      <div className="relative mx-auto max-w-4xl">
+        <SketchfabMotoViewer
+          height={viewerHeight}
+          initialFov={initialFov}
+          cameraZoom={cameraZoom}
+          showAttribution={false}
+          interactive
+          isHoveringPart={Boolean(hoveredPart)}
+          interaction={{
+            onPartHover: setHoveredPart,
+            onPartSelect: handlePartClick,
+          }}
+        />
 
-      <p className="text-muted mt-4 text-center text-sm">
-        Вращайте модель мышью, затем выберите деталь для поиска запчастей
+        <div
+          className={cn(
+            'pointer-events-none absolute inset-x-0 bottom-0 rounded-b-xl bg-gradient-to-t from-black/90 via-black/60 to-transparent px-4 pt-10 pb-3 text-center transition-opacity duration-150',
+            highlighted ? 'opacity-100' : 'opacity-0',
+          )}
+          aria-hidden={!highlighted}
+        >
+          {highlightedPart && (
+            <>
+              <p className="text-accent text-sm font-medium">
+                {highlightedPart.name}
+                {linkToListings && !onPartSelect && ' — кликните для поиска'}
+              </p>
+              <p className="text-muted mt-0.5 text-xs">{highlightedPart.description}</p>
+            </>
+          )}
+        </div>
+      </div>
+
+      <p className="text-muted mt-3 text-center text-sm">
+        Наведите на деталь в модели или выберите кнопкой ниже
       </p>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-2">
+      <div className="mt-3 flex flex-wrap justify-center gap-2">
         {bikeParts.map((part) => (
           <button
             key={part.id}
@@ -76,12 +110,18 @@ export function InteractiveBikeModel({
         ))}
       </div>
 
-      {highlighted && (
-        <p className="text-muted mt-3 text-center text-sm">
-          {bikeParts.find((p) => p.id === highlighted)?.description}
-          {linkToListings && !onPartSelect && ' — нажмите, чтобы найти запчасти'}
-        </p>
-      )}
+      <p className="text-muted mt-3 text-center text-xs">
+        3D-модель{' '}
+        <a
+          href={SKETCHFAB_MOTO_MODEL_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="text-accent hover:underline"
+        >
+          Moto
+        </a>{' '}
+        by evschazenez on Sketchfab
+      </p>
     </div>
   );
 }

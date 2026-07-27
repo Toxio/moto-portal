@@ -4,6 +4,7 @@ import {
   DEFAULT_SKETCHFAB_ZOOM,
   SKETCHFAB_MOTO_MODEL_URL,
 } from '@/features/parts/sketchfab';
+import type { PartInteractionHandlers } from '@/features/parts/sketchfabInteraction';
 import { initSketchfabViewer } from '@/features/parts/sketchfabViewer';
 import { cn } from '@/lib/utils';
 
@@ -15,6 +16,9 @@ interface SketchfabMotoViewerProps {
   /** Множитель дистанции после recenter. 1 = как по умолчанию, 2 = в 2 раза дальше */
   cameraZoom?: number;
   showAttribution?: boolean;
+  interactive?: boolean;
+  interaction?: PartInteractionHandlers;
+  isHoveringPart?: boolean;
 }
 
 export function SketchfabMotoViewer({
@@ -23,10 +27,17 @@ export function SketchfabMotoViewer({
   initialFov = DEFAULT_SKETCHFAB_FOV,
   cameraZoom = DEFAULT_SKETCHFAB_ZOOM,
   showAttribution = true,
+  interactive = false,
+  interaction,
+  isHoveringPart = false,
 }: SketchfabMotoViewerProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const interactionRef = useRef(interaction);
   const [loadError, setLoadError] = useState(false);
   const [isReady, setIsReady] = useState(false);
+
+  interactionRef.current = interaction;
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -38,14 +49,24 @@ export function SketchfabMotoViewer({
     return initSketchfabViewer(iframe, {
       initialFov,
       cameraZoom,
+      interaction: interactive
+        ? {
+            onPartHover: (partId) => interactionRef.current?.onPartHover?.(partId),
+            onPartSelect: (partId) => interactionRef.current?.onPartSelect?.(partId),
+          }
+        : undefined,
       onReady: () => setIsReady(true),
       onError: () => setLoadError(true),
     });
-  }, [initialFov, cameraZoom]);
+  }, [initialFov, cameraZoom, interactive]);
 
   return (
     <div className={cn('overflow-hidden rounded-xl border border-white/10', className)}>
-      <div className="relative w-full" style={{ height }}>
+      <div
+        ref={containerRef}
+        className={cn('relative w-full', isHoveringPart && isReady && 'cursor-pointer')}
+        style={{ height }}
+      >
         {!isReady && !loadError && (
           <div className="bg-secondary/50 absolute inset-0 z-10 animate-pulse rounded-xl" />
         )}
@@ -56,7 +77,7 @@ export function SketchfabMotoViewer({
           allow="autoplay; fullscreen; xr-spatial-tracking"
           allowFullScreen
           className={cn(
-            'absolute inset-0 h-full w-full border-0 transition-opacity duration-500',
+            'pointer-events-auto absolute inset-0 h-full w-full border-0 transition-opacity duration-500',
             isReady ? 'opacity-100' : 'opacity-0',
           )}
         />
