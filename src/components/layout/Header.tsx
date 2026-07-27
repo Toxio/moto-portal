@@ -24,8 +24,8 @@ export function Header() {
   return (
     <header className="bg-primary/90 sticky top-0 z-40 border-b border-white/10 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
-        <Link to="/" className="text-accent shrink-0 text-xl font-bold">
-          La Moto
+        <Link to="/" className="shrink-0 text-xl font-bold text-white">
+          La <span className="text-accent">Moto</span>
         </Link>
 
         <form onSubmit={handleSearch} className="hidden flex-1 md:block md:max-w-sm lg:max-w-md">
