@@ -14,11 +14,19 @@
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
+npm run dev          # http://localhost:5173
 npm run build
 npm run preview
-npm run format
+npm run lint         # ESLint
+npm run lint:fix     # ESLint с автофиксом
+npm run format       # Prettier — форматировать
+npm run format:check # Prettier — проверить
+npm run check        # lint + format:check
 ```
+
+При коммите автоматически запускается **lint-staged** (ESLint + Prettier для изменённых файлов).
+
+Рекомендуемые расширения VS Code: ESLint, Prettier (см. `.vscode/extensions.json`).
 
 ## Разделы
 

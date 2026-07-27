@@ -3,6 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import { BIKE_CATEGORIES } from '@/lib/types';
 import { Button } from '@/components/ui/Button';
 import { ListingCard } from '@/features/listings/ListingCard';
+import { HomeMapSection } from '@/features/map/HomeMapSection';
+import { HomeForumSection } from '@/features/forum/HomeForumSection';
+import { HomeEventsSection } from '@/features/events/HomeEventsSection';
 import { useListings } from '@/hooks/useListings';
 import { Skeleton } from '@/components/ui/Skeleton';
 
@@ -66,6 +69,8 @@ export function HomePage() {
         </div>
       </section>
 
+      <HomeMapSection />
+
       <section className="mx-auto max-w-7xl px-4 py-12">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold">Premium объявления</h2>
@@ -79,6 +84,10 @@ export function HomePage() {
             : featured.map((l) => <ListingCard key={l.id} listing={l} />)}
         </div>
       </section>
+
+      <HomeEventsSection />
+
+      <HomeForumSection />
     </>
   );
 }
