@@ -6,7 +6,7 @@ import { useGlobalSearch } from '@/hooks/useGlobalSearch';
 const TYPE_LABELS = {
   listing: 'Объявление',
   event: 'Событие',
-  encyclopedia: 'Энциклопедия',
+  journal: 'Журнал',
   forum: 'Форум',
 };
 

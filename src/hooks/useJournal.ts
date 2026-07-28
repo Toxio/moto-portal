@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
-import type { EncyclopediaModel } from '@/lib/types';
+import type { JournalModel } from '@/lib/types';
 import { delay, getFromStorage, setToStorage } from '@/lib/utils';
-import { mockEncyclopedia } from '@/mocks/encyclopedia';
+import { mockJournalModels } from '@/mocks/journal';
 
 const FAVORITES_KEY = 'la-moto-favorites';
 
-export function useEncyclopedia() {
-  const [models, setModels] = useState<EncyclopediaModel[]>([]);
+export function useJournal() {
+  const [models, setModels] = useState<JournalModel[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     delay(300).then(() => {
-      setModels(mockEncyclopedia);
+      setModels(mockJournalModels);
       setFavorites(getFromStorage(FAVORITES_KEY, [] as string[]));
       setLoading(false);
     });
@@ -29,13 +29,13 @@ export function useEncyclopedia() {
   return { models, favorites, loading, toggleFavorite };
 }
 
-export function useEncyclopediaModel(id: string) {
-  const [model, setModel] = useState<EncyclopediaModel | null>(null);
+export function useJournalModel(id: string) {
+  const [model, setModel] = useState<JournalModel | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     delay(200).then(() => {
-      setModel(mockEncyclopedia.find((m) => m.id === id) ?? null);
+      setModel(mockJournalModels.find((m) => m.id === id) ?? null);
       setLoading(false);
     });
   }, [id]);

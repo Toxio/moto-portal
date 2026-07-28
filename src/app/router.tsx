@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate, useParams } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { HomePage } from '@/pages/HomePage';
@@ -9,8 +9,8 @@ import { ForumPage } from '@/pages/ForumPage';
 import { ForumCategoryPage } from '@/pages/ForumCategoryPage';
 import { ForumThreadPage } from '@/pages/ForumThreadPage';
 import { EventsPage } from '@/pages/EventsPage';
-import { EncyclopediaPage } from '@/pages/EncyclopediaPage';
-import { EncyclopediaDetailPage } from '@/pages/EncyclopediaDetailPage';
+import { JournalPage } from '@/pages/JournalPage';
+import { JournalModelDetailPage } from '@/pages/JournalModelDetailPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { SearchPage } from '@/pages/SearchPage';
 
@@ -25,6 +25,11 @@ function PageLoader() {
       <Skeleton className="h-96 w-full" />
     </div>
   );
+}
+
+function EncyclopediaRedirect() {
+  const { id } = useParams<{ id: string }>();
+  return <Navigate to={id ? `/journal/${id}` : '/journal'} replace />;
 }
 
 export const router = createBrowserRouter([
@@ -55,8 +60,10 @@ export const router = createBrowserRouter([
         ),
       },
       { path: 'events', element: <EventsPage /> },
-      { path: 'encyclopedia', element: <EncyclopediaPage /> },
-      { path: 'encyclopedia/:id', element: <EncyclopediaDetailPage /> },
+      { path: 'journal', element: <JournalPage /> },
+      { path: 'journal/:id', element: <JournalModelDetailPage /> },
+      { path: 'encyclopedia', element: <Navigate to="/journal" replace /> },
+      { path: 'encyclopedia/:id', element: <EncyclopediaRedirect /> },
       { path: 'profile', element: <ProfilePage /> },
       { path: 'search', element: <SearchPage /> },
     ],

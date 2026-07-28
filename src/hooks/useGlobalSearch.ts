@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { SearchResult } from '@/lib/types';
 import { mockEvents } from '@/mocks/events';
-import { mockEncyclopedia } from '@/mocks/encyclopedia';
+import { mockJournalModels } from '@/mocks/journal';
 import { mockForumThreads } from '@/mocks/forum';
 import { mockListings } from '@/mocks/listings';
 
@@ -35,14 +35,14 @@ export function useGlobalSearch(query: string): SearchResult[] {
         url: '/events',
       }));
 
-    const encyclopediaResults: SearchResult[] = mockEncyclopedia
+    const journalResults: SearchResult[] = mockJournalModels
       .filter((m) => m.brand.toLowerCase().includes(q) || m.model.toLowerCase().includes(q))
       .map((m) => ({
         id: m.id,
-        type: 'encyclopedia' as const,
+        type: 'journal' as const,
         title: `${m.brand} ${m.model}`,
         subtitle: m.country,
-        url: `/encyclopedia/${m.id}`,
+        url: `/journal/${m.id}`,
       }));
 
     const forumResults: SearchResult[] = mockForumThreads
@@ -55,6 +55,6 @@ export function useGlobalSearch(query: string): SearchResult[] {
         url: `/forum/${t.categoryId}/${t.id}`,
       }));
 
-    return [...listingResults, ...eventResults, ...encyclopediaResults, ...forumResults];
+    return [...listingResults, ...eventResults, ...journalResults, ...forumResults];
   }, [query]);
 }

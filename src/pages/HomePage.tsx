@@ -60,7 +60,7 @@ export function HomePage() {
             </h1>
 
             <p className="mx-auto mb-6 max-w-lg text-sm leading-relaxed font-light text-white/75 md:mb-9 md:text-lg">
-              Объявления, карта байкеров, форум и энциклопедия — всё для тех, кто живёт мото
+              Объявления, карта байкеров, форум и журнал — всё для тех, кто живёт мото
             </p>
 
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4">

@@ -3,13 +3,13 @@ import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ListingCard } from '@/features/listings/ListingCard';
-import { useEncyclopedia, useEncyclopediaModel } from '@/hooks/useEncyclopedia';
+import { useJournal, useJournalModel } from '@/hooks/useJournal';
 import { useListings } from '@/hooks/useListings';
 
-export function EncyclopediaDetailPage() {
+export function JournalModelDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { model, loading } = useEncyclopediaModel(id!);
-  const { favorites, toggleFavorite } = useEncyclopedia();
+  const { model, loading } = useJournalModel(id!);
+  const { favorites, toggleFavorite } = useJournal();
   const { listings } = useListings();
 
   const related = listings.filter(
@@ -39,8 +39,8 @@ export function EncyclopediaDetailPage() {
       </Helmet>
 
       <div className="mx-auto max-w-4xl px-4 py-8">
-        <Link to="/encyclopedia" className="text-accent mb-4 inline-block text-sm hover:underline">
-          ← Энциклопедия
+        <Link to="/journal" className="text-accent mb-4 inline-block text-sm hover:underline">
+          ← Журнал
         </Link>
 
         <div className="glass-panel overflow-hidden rounded-xl">

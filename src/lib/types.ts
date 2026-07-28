@@ -84,13 +84,13 @@ export interface MotoEvent {
   gallery?: string[];
 }
 
-export type EncyclopediaBikeType = 'sport' | 'chopper' | 'touring' | 'cruiser' | 'enduro' | 'retro';
+export type JournalBikeType = 'sport' | 'chopper' | 'touring' | 'cruiser' | 'enduro' | 'retro';
 
-export interface EncyclopediaModel {
+export interface JournalModel {
   id: string;
   brand: string;
   model: string;
-  type: EncyclopediaBikeType;
+  type: JournalBikeType;
   year: number;
   engineVolume: number;
   power: number;
@@ -98,6 +98,16 @@ export interface EncyclopediaModel {
   description: string;
   imageUrl: string;
   specs: Record<string, string>;
+}
+
+export interface JournalVideo {
+  id: string;
+  youtubeId: string;
+  title: string;
+  channel: string;
+  views: number;
+  description: string;
+  featured?: boolean;
 }
 
 export interface User {
@@ -118,7 +128,7 @@ export interface BikePart {
 
 export interface SearchResult {
   id: string;
-  type: 'listing' | 'event' | 'encyclopedia' | 'forum';
+  type: 'listing' | 'event' | 'journal' | 'forum';
   title: string;
   subtitle: string;
   url: string;
@@ -142,7 +152,7 @@ export const NAV_ITEMS = [
   { to: '/forum', label: 'Форум' },
   { to: '/map', label: 'Карта' },
   { to: '/events', label: 'События' },
-  { to: '/encyclopedia', label: 'Энциклопедия' },
+  { to: '/journal', label: 'Журнал' },
 ] as const;
 
 export const REGIONS = ['Киев и область', 'Львов и область', 'Одесса и область', 'Вся Украина'];

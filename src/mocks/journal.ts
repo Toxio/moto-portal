@@ -1,7 +1,20 @@
-import type { EncyclopediaModel } from '@/lib/types';
+import type { JournalModel, JournalVideo } from '@/lib/types';
 import { mockImage } from '@/mocks/images';
 
-export const mockEncyclopedia: EncyclopediaModel[] = [
+export const mockJournalVideos: JournalVideo[] = [
+  {
+    id: 'v1',
+    youtubeId: '7YPkxD_i4ME',
+    title: 'Екстрене гальмування на мото: теорія vs реальність',
+    channel: 'Nebachiv',
+    views: 15_800,
+    description:
+      'Обучающий ролик украинскими: как работает экстренное торможение на мотоцикле — теория и практика в городе.',
+    featured: true,
+  },
+];
+
+export const mockJournalModels: JournalModel[] = [
   {
     id: 'm1',
     brand: 'Harley-Davidson',
