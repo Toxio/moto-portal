@@ -1,15 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="La Moto">
   <rect width="512" height="512" rx="112" fill="#000000" />
-  <text
-    x="256"
-    y="290"
-    text-anchor="middle"
-    font-family="Arial, Helvetica, sans-serif"
-    font-size="132"
-    font-weight="700"
-    letter-spacing="-2"
-  >
-    <tspan fill="#ffffff">La </tspan>
-    <tspan fill="#dc2626">Moto</tspan>
-  </text>
+  <g transform="translate(256 290) scale(0.8) translate(-256 -290)">
+    <text
+      x="256"
+      y="290"
+      text-anchor="middle"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="132"
+      font-weight="700"
+      letter-spacing="-1"
+    >
+      <tspan fill="#ffffff">La </tspan>
+      <tspan fill="#dc2626">Moto</tspan>
+    </text>
+  </g>
 </svg>
