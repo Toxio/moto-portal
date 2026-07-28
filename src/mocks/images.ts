@@ -1,5 +1,30 @@
-export const unsplash = (id: string, width = 800) =>
-  `https://images.unsplash.com/photo-${id}?w=${width}&q=80&auto=format&fit=crop`;
+import sportCategoryPhoto from '@/assets/categories/sport.jpg';
+
+export const unsplash = (id: string, width = 800, height?: number) =>
+  `https://images.unsplash.com/photo-${id}?w=${width}${height ? `&h=${height}` : ''}&q=80&auto=format&fit=crop`;
+
+/** Category thumbnail photos — Unsplash IDs, asset imports, or full image URLs. */
+export const CATEGORY_PHOTOS = {
+  /** motoamerica.com blocks hotlink (403) — local copy of the same press photo */
+  sport: sportCategoryPhoto,
+  chopper:
+    'https://japanlife-moto.ru/upload/resize_cache/webp/iblock/234/qnaqmqp8grerh62zg2b70nu0y4129tzd.webp',
+  touring:
+    'https://static.wixstatic.com/media/720c00_8cb6740020244a23b94f5c9505f0b3b5~mv2.jpg/v1/fill/w_1103,h_675,al_c,q_85,enc_avif,quality_auto/720c00_8cb6740020244a23b94f5c9505f0b3b5~mv2.jpg',
+  cruiser: '1558981000-f294a6ed32b2',
+  enduro: 'https://hyperlook.ru/upload/iblock/5db/lrxbhf9y6vc50olhl9memi4npzi31bvp.jpg',
+  retro: 'https://carakoom.com/data/wall/787/640b66f9_medium.jpg',
+  gear: '1771574207619-ebf770550c16',
+  parts: '1771402629441-95e637743f93',
+} as const;
+
+export type CategoryPhotoKey = keyof typeof CATEGORY_PHOTOS;
+
+export const mockCategoryImage = (category: CategoryPhotoKey, width = 320) => {
+  const photo = CATEGORY_PHOTOS[category];
+  if (photo.startsWith('http') || photo.startsWith('/')) return photo;
+  return unsplash(photo, width, 240);
+};
 
 /** Verified Unsplash photo IDs (404-safe as of 2026). */
 export const MOCK_PHOTOS = {

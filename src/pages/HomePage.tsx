@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { BIKE_CATEGORIES } from '@/lib/types';
+import { CategoryThumb } from '@/features/home/CategoryThumb';
 import { Button } from '@/components/ui/Button';
 import { ListingCard } from '@/features/listings/ListingCard';
 import { HomeMapSection } from '@/features/map/HomeMapSection';
@@ -78,7 +79,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12">
+      <section className="mx-auto max-w-7xl px-4 pb-12">
         <h2 className="mb-6 text-2xl font-bold">Категории</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
           {BIKE_CATEGORIES.map((cat) => (
@@ -89,9 +90,9 @@ export function HomePage() {
                   ? `/listings?tab=${cat.id === 'gear' ? 'gear' : 'parts'}`
                   : `/listings?category=${cat.id}`
               }
-              className="gradient-border hover-glow flex flex-col items-center gap-2 rounded-xl p-4 text-center transition"
+              className="gradient-border hover-glow group flex flex-col items-stretch gap-2.5 rounded-xl p-3 text-center transition sm:p-3.5"
             >
-              <span className="text-3xl">{cat.emoji}</span>
+              <CategoryThumb category={cat.id} />
               <span className="text-xs font-medium">{cat.label}</span>
             </Link>
           ))}

@@ -124,15 +124,15 @@ export interface SearchResult {
   url: string;
 }
 
-export const BIKE_CATEGORIES: { id: BikeCategory; label: string; emoji: string }[] = [
-  { id: 'sport', label: 'Спортбайки', emoji: '🏁' },
-  { id: 'chopper', label: 'Чопперы', emoji: '🪶' },
-  { id: 'touring', label: 'Туристы', emoji: '🌍' },
-  { id: 'cruiser', label: 'Круизеры', emoji: '⚙️' },
-  { id: 'enduro', label: 'Эндуро / Кросс', emoji: '🏔️' },
-  { id: 'retro', label: 'Ретро', emoji: '🕰️' },
-  { id: 'gear', label: 'Экипировка', emoji: '👕' },
-  { id: 'parts', label: 'Детали', emoji: '🔩' },
+export const BIKE_CATEGORIES: { id: BikeCategory; label: string }[] = [
+  { id: 'sport', label: 'Спортбайки' },
+  { id: 'chopper', label: 'Чопперы' },
+  { id: 'touring', label: 'Туристы' },
+  { id: 'cruiser', label: 'Круизеры' },
+  { id: 'enduro', label: 'Эндуро / Кросс' },
+  { id: 'retro', label: 'Ретро' },
+  { id: 'gear', label: 'Экипировка' },
+  { id: 'parts', label: 'Детали' },
 ];
 
 export const NAV_ITEMS = [

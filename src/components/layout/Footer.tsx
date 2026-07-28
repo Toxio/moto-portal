@@ -23,8 +23,17 @@ export function Footer() {
             </div>
           </div>
         </div>
-        <p className="text-muted mt-6 text-center text-xs">
-          © 2026 La Moto. Frontend MVP на mock-данных.
+        <p className="text-muted mt-6 text-center text-xs">© 2026 La Moto.</p>
+        <p className="text-muted mt-2 text-center text-xs">
+          Developed by{' '}
+          <a
+            href="https://www.itgenius.com.ua/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:text-accent/80 transition"
+          >
+            IT Genius
+          </a>
         </p>
       </div>
     </footer>
